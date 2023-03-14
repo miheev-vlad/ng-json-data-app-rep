@@ -1,0 +1,63 @@
+input[type='text'],
+input[type='number'],
+select {
+  display: block;
+  width: 100%;
+  padding: 12px;
+  font-size: 17px;
+  border: 1px solid var(--grey-0);
+
+  &:disabled {
+    background-color: var(--lightgray) !important;
+  }
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+table th,
+table td {
+  padding: 1rem;
+  text-align: center;
+  width: 10px;
+  border: 1px solid var(--grey-0);
+}
+
+.sorted-by {
+  background: var(--dark-color) !important;
+  color: var(--white-0);
+}
+
+table th {
+  background: var(--light-color);
+}
+
+img {
+  width: 50px;
+}
+
+.form-control {
+  display: flex;
+  flex-direction: row;
+  justify-content: start;
+}
+
+.form-control-name,
+.form-control-brand {
+  display: block;
+  color: var(--grey-1);
+  margin-bottom: 15px;
+  width: 300px;
+}
+
+.form-control-name {
+  margin-right: 10px;
+}
+
+.action-panel {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}

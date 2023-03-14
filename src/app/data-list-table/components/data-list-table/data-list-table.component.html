@@ -1,0 +1,128 @@
+<div class="action-panel">
+  <div class="left-action">
+    <div class="form-control">
+      <div class="form-control-name">
+        <input type="text" placeholder="Name..." [(ngModel)]="searchNameStr" />
+      </div>
+      <div class="form-control-brand">
+        <input
+          type="text"
+          placeholder="Brand Name..."
+          [(ngModel)]="searchBrandStr" />
+      </div>
+    </div>
+  </div>
+  <div class="right-action">
+    <div class="form-control">
+      <div class="form-control-select">
+        <select
+          name="select"
+          [(ngModel)]="selectedSortBy"
+          [(value)]="selectedSortBy">
+          <option value="" selected>Sorting by...</option>
+          <option value="wbRating_up">Sorting by Wb Rating up &uarr;</option>
+          <option value="wbRating_dn">Sorting by Wb Rating down &darr;</option>
+          <option value="reviewsCount_up">
+            Sorting by Reviews Count up &uarr;
+          </option>
+          <option value="reviewsCount_dn">
+            Sorting by Reviews Count down &darr;
+          </option>
+          <option value="soldAmount_up">
+            Sorting by Sold Amount up &uarr;
+          </option>
+          <option value="soldAmount_dn">
+            Sorting by Sold Amount down &darr;
+          </option>
+        </select>
+      </div>
+    </div>
+  </div>
+</div>
+<ng-container
+  *ngIf="
+    dataList$
+      | async
+      | filterItems : searchNameStr : searchBrandStr
+      | sortItems : selectedSortBy as dataList;
+    else noData
+  ">
+  <table>
+    <thead>
+      <tr>
+        <th>id</th>
+        <th
+          [class.sorted-by]="
+            selectedSortBy === 'wbRating_up' || selectedSortBy === 'wbRating_dn'
+          ">
+          Wb Rating <span *ngIf="selectedSortBy === 'wbRating_up'">&uarr;</span
+          ><span *ngIf="selectedSortBy === 'wbRating_dn'">&darr;</span>
+        </th>
+        <th
+          [class.sorted-by]="
+            selectedSortBy === 'reviewsCount_up' ||
+            selectedSortBy === 'reviewsCount_dn'
+          ">
+          Reviews Count
+          <span *ngIf="selectedSortBy === 'reviewsCount_up'">&uarr;</span
+          ><span *ngIf="selectedSortBy === 'reviewsCount_dn'">&darr;</span>
+        </th>
+        <th>Nomenclature</th>
+        <th>Sku</th>
+        <th>Name</th>
+        <th>Brand Name</th>
+        <th>Brand Id</th>
+        <th>Image</th>
+        <th>Preview</th>
+        <th>Ordered</th>
+        <th>Sold Quantity</th>
+        <th
+          [class.sorted-by]="
+            selectedSortBy === 'soldAmount_up' ||
+            selectedSortBy === 'soldAmount_dn'
+          ">
+          Sold Amount
+          <span *ngIf="selectedSortBy === 'soldAmount_up'">&uarr;</span
+          ><span *ngIf="selectedSortBy === 'soldAmount_dn'">&darr;</span>
+        </th>
+        <th>Ordered Amount</th>
+        <th>Availability</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let dataItem of getPaginateDataList(dataList)">
+        <td>{{ dataItem.id | slice : 0 : 7 }}</td>
+        <td>{{ dataItem.wbRating }}</td>
+        <td>{{ dataItem.reviewsCount }}</td>
+        <td>{{ dataItem.nomenclature }}</td>
+        <td>{{ dataItem.sku }}</td>
+        <td>{{ dataItem.name }}</td>
+        <td>{{ dataItem.brandName }}</td>
+        <td>{{ dataItem.brandId | slice : 0 : 7 }}</td>
+        <td>
+          <img [src]="dataItem.image" />
+        </td>
+        <td>
+          <img [src]="dataItem.preview" />
+        </td>
+        <td>{{ dataItem.ordered }}</td>
+        <td>{{ dataItem.soldQuantity }}</td>
+        <td>{{ dataItem.soldAmount }}</td>
+        <td>{{ dataItem.orderedAmount }}</td>
+        <td>{{ dataItem.availability }}</td>
+      </tr>
+    </tbody>
+  </table>
+  <app-pagination
+    [currentPage]="currentPage"
+    [limit]="limit"
+    [total]="dataList.length"
+    (changePage)="changePage($event)"></app-pagination>
+  <div *ngIf="dataList.length === 0">
+    <p>No data to render...</p>
+  </div>
+</ng-container>
+
+<ng-template #noData>
+  <p>No data...</p>
+</ng-template>
